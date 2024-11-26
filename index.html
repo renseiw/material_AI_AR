@@ -48,6 +48,10 @@
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
+                video.addEventListener('loadeddata', () => {
+                    // Modell laden, sobald das Video bereit ist
+                    preload();
+                });
             })
             .catch(err => {
                 console.error('Fehler beim Zugriff auf die Kamera: ', err);
@@ -70,9 +74,6 @@
                 }
             });
         });
-
-        // Modell vorladen
-        preload();
     </script>
 </body>
 </html>
