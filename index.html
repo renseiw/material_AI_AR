@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materialerkennung in AR mit ML5.js</title>
     <!-- Einbinden von ML5.js Bibliothek -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ml5/0.12.2/ml5.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.12.2/dist/ml5.min.js"></script>
     <style>
         body {
             text-align: center;
@@ -65,14 +65,18 @@
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            classifier.classify(canvas, function(error, results) {
-                if (error) {
-                    console.error('Fehler bei der Vorhersage: ', error);
-                    predictionResult.innerText = 'Fehler bei der Vorhersage.';
-                } else {
-                    predictionResult.innerText = `Erkanntes Material: ${results[0].label}`;
-                }
-            });
+            if (classifier) {
+                classifier.classify(canvas, function(error, results) {
+                    if (error) {
+                        console.error('Fehler bei der Vorhersage: ', error);
+                        predictionResult.innerText = 'Fehler bei der Vorhersage.';
+                    } else {
+                        predictionResult.innerText = `Erkanntes Material: ${results[0].label}`;
+                    }
+                });
+            } else {
+                predictionResult.innerText = 'Das Modell ist noch nicht geladen.';
+            }
         });
     </script>
 </body>
